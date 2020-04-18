@@ -18,8 +18,22 @@ namespace IssueTrackerAPI.Models
         [StringLength(255)]
         [Display(Name = "Last name")]
         public string LastName { get; set; }
+        [Display(Name = "Full Name")]
+        public string FullName
+        {
+            get
+            {
+                return LastName + " " + FirstName;
+            }
+        }
         [Required(ErrorMessage = "The Email field is required.")]
         [EmailAddress(ErrorMessage = "The Email field is not a valid e-mail address.")]
         public string Email { get; set; }
+
+        public ICollection<Issue> ReportedIssues { get; set; }
+        public ICollection<ProjectMember> ProjectMembers { get; set; }
+        public ICollection<Assignee> Assignees { get; set; }
+        public ICollection<Comment> Comments { get; set; }
+
     }
 }

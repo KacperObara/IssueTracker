@@ -14,5 +14,7 @@ namespace IssueTrackerAPI.Models
         [StringLength(255)]
         [Display(Name = "Status name")]
         public string StatusName { get; set; }
+
+        public ICollection<Issue> Issues { get; set; }
     }
 }

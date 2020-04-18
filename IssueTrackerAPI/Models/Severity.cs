@@ -14,5 +14,7 @@ namespace IssueTrackerAPI.Models
         [StringLength(255)]
         [Display(Name = "Severity name")]
         public string SeverityName { get; set; }
+
+        public ICollection<Issue> Issues { get; set; }
     }
 }

@@ -19,5 +19,7 @@ namespace IssueTrackerAPI.Models
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Creation Date")]
         public DateTime CreationDate { get; set; }
+        public ICollection<Issue> Issues { get; set; }
+        public ICollection<ProjectMember> ProjectMembers { get; set; }
     }
 }
