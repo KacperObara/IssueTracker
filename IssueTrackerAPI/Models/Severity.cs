@@ -9,7 +9,7 @@ namespace IssueTrackerAPI.Models
     public class Severity
     {
         [Key]
-        public int Id_Severity { get; set; }
+        public int SeverityId { get; set; }
         [Required(ErrorMessage = "The severity name field is required.")]
         [StringLength(255)]
         [Display(Name = "Severity name")]
