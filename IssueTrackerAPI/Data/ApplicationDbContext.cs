@@ -24,6 +24,8 @@ namespace IssueTrackerAPI.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+
             builder.Entity<Assignee>().ToTable(nameof(Assignee));
             builder.Entity<Comment>().ToTable(nameof(Comment));
             builder.Entity<Issue>().ToTable(nameof(Issue));
