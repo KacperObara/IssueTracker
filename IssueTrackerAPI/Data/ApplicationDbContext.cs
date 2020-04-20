@@ -43,6 +43,19 @@ namespace IssueTrackerAPI.Data
 
             builder.Entity<Comment>()
                 .HasKey(c => new { c.IssueId, c.PersonId });
+
+            builder.Entity<Assignee>()
+                 .HasOne<Person>(e => e.Person)
+                 .WithMany(e => e.Assignees)
+                 .HasForeignKey(e => e.PersonId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+
+            builder.Entity<Comment>()
+                 .HasOne<Person>(e => e.Person)
+                 .WithMany(e => e.Comments)
+                 .HasForeignKey(e => e.PersonId)
+                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -14,13 +14,13 @@ namespace IssueTrackerAPI.Data
 
             if (context.People.Any())
             {
-                return; 
+                return;
             }
 
             var people = new Person[]
             {
-                new Person{PersonId = 1, FirstName = "Jan", LastName = "Kowalski", Email = "test@test.com"},
-                new Person{PersonId = 2, FirstName = "Emil", LastName = "Nowak", Email = "test2@test.com"}
+                new Person{FirstName = "Jan", LastName = "Kowalski", Email = "test@test.com"},
+                new Person{FirstName = "Emil", LastName = "Nowak", Email = "test2@test.com"}
             };
 
             foreach (Person p in people)
@@ -30,10 +30,10 @@ namespace IssueTrackerAPI.Data
             context.SaveChanges();
 
             var severities = new Severity[]
-{
-                new Severity{SeverityId = 1, SeverityName = "Minor"},
-                new Severity{SeverityId = 2, SeverityName = "Major"}
-};
+            {
+                new Severity{SeverityName = "Minor"},
+                new Severity{SeverityName = "Major"}
+            };
 
             foreach (Severity s in severities)
             {
