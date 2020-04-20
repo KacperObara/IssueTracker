@@ -9,7 +9,7 @@ namespace IssueTrackerAPI.Models
     public class Person
     {
         [Key]
-        public int IssueId { get; set; }
+        public int PersonId { get; set; }
         [Required(ErrorMessage = "The First name field is required.")]
         [StringLength(255)]
         [Display(Name = "First name")]
