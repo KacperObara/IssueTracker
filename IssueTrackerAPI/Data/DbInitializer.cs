@@ -17,6 +17,23 @@ namespace IssueTrackerAPI.Data
                 return;
             }
 
+
+
+            var projects = new Project[]
+            {
+                new Project{Title = "Project #1", Description = "Very long description", CreationDate = DateTime.Parse("2007-09-01")},
+                new Project{Title = "Project #2", Description = "long description", CreationDate = DateTime.Parse("2012-11-05")},
+                new Project{Title = "Project #3", Description = "description", CreationDate = DateTime.Parse("2015-06-23")}
+            };
+
+            foreach (Project p in projects)
+            {
+                context.Projects.Add(p);
+            }
+            context.SaveChanges();
+
+
+
             var people = new Person[]
             {
                 new Person{FirstName = "Jan", LastName = "Kowalski", Email = "test@test.com"},
@@ -28,6 +45,8 @@ namespace IssueTrackerAPI.Data
                 context.People.Add(p);
             }
             context.SaveChanges();
+
+
 
             var severities = new Severity[]
             {
@@ -41,7 +60,37 @@ namespace IssueTrackerAPI.Data
             }
             context.SaveChanges();
 
-            Console.WriteLine("WTF");
+
+            var statuses = new Status[]
+            {
+                new Status{StatusName = "Open"},
+                new Status{StatusName = "In progress"},
+                new Status{StatusName = "Closed"}
+            };
+
+            foreach (Status s in statuses)
+            {
+                context.Statuses.Add(s);
+            }
+            context.SaveChanges();
+
+
+
+
+            var issues = new Issue[]
+            {
+                new Issue{Title = "Problem #1", Description = "Very very long description",
+                        AuthorId = people.Single( i => i.LastName == "Nowak").PersonId,
+                        ProjectId = projects.Single( i => i.Title == "Project #1").ProjectId,
+                        SeverityId = severities.Single( i => i.SeverityName == "Minor").SeverityId,
+                        StatusId = statuses.Single( i => i.StatusName == "Open").StatusId }
+            };
+
+            foreach (Issue i in issues)
+            {
+                context.Issues.Add(i);
+            }
+            context.SaveChanges();
         }
     }
 }
