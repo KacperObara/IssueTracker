@@ -18,8 +18,8 @@ namespace IssueTrackerAPI.Models
         [Display(Name = "Creation Date")]
         public DateTime CreationDate { get; set; }
         public int IssueId { get; set; }
-        public int PersonId { get; set; }
         public Issue Issue { get; set; }
+        public int PersonId { get; set; }
         public Person Person { get; set; }
     }
 }

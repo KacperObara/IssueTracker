@@ -91,6 +91,60 @@ namespace IssueTrackerAPI.Data
                 context.Issues.Add(i);
             }
             context.SaveChanges();
+
+
+
+
+            var projectMembers = new ProjectMember[]
+            {
+                new ProjectMember{
+                    ProjectId = projects.Single( i => i.Title == "Project #1").ProjectId,
+                    PersonId = people.Single( i => i.LastName == "Nowak").PersonId },
+
+                new ProjectMember{
+                    ProjectId = projects.Single( i => i.Title == "Project #1").ProjectId,
+                    PersonId = people.Single( i => i.LastName == "Kowalski").PersonId }
+            };
+
+            foreach (ProjectMember p in projectMembers)
+            {
+                context.ProjectMembers.Add(p);
+            }
+            context.SaveChanges();
+
+
+
+
+
+            var assignees = new Assignee[]
+            {
+                new Assignee{
+                    IssueId = issues.Single( i => i.Title == "Problem #1").IssueId,
+                    PersonId = people.Single( i => i.LastName == "Kowalski").PersonId }
+            };
+
+            foreach (Assignee a in assignees)
+            {
+                context.Assignees.Add(a);
+            }
+            context.SaveChanges();
+
+
+
+
+
+            var comments = new Comment[]
+            {
+                new Comment{ Content = "Good job", CreationDate = DateTime.Parse("2016-06-23"),
+                        IssueId = issues.Single( i => i.Title == "Problem #1").IssueId,
+                        PersonId = people.Single( i => i.LastName == "Nowak").PersonId }
+            };
+
+            foreach (Comment c in comments)
+            {
+                context.Comments.Add(c);
+            }
+            context.SaveChanges();
         }
     }
 }
