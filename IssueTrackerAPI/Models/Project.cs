@@ -21,5 +21,10 @@ namespace IssueTrackerAPI.Models
         public DateTime CreationDate { get; set; }
         public ICollection<Issue> Issues { get; set; }
         public ICollection<ProjectMember> ProjectMembers { get; set; }
+
+        public Project()
+        {
+            this.CreationDate = DateTime.UtcNow;
+        }
     }
 }
