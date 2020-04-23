@@ -30,5 +30,10 @@ namespace IssueTrackerAPI.Models
 
         public ICollection<Assignee> Assignees { get; set; }
         public ICollection<Comment> Comments { get; set; }
+
+        public Issue()
+        {
+            this.CreationDate = DateTime.UtcNow;
+        }
     }
 }

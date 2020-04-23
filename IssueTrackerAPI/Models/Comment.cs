@@ -21,5 +21,10 @@ namespace IssueTrackerAPI.Models
         public Issue Issue { get; set; }
         public int PersonId { get; set; }
         public Person Person { get; set; }
+
+        public Comment()
+        {
+            this.CreationDate = DateTime.UtcNow;
+        }
     }
 }
