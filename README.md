@@ -1,2 +1,2 @@
 # IssueTracker
- ASP.NET MVC, .Net Core with Entity framework application.
+ ASP.NET MVC, .NET Core with Entity Framework application.
