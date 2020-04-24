@@ -29,7 +29,6 @@ namespace IssueTrackerAPI.Models
         public Status Status{ get; set; }
 
         public ICollection<Assignee> Assignees { get; set; }
-        public ICollection<Comment> Comments { get; set; }
 
         public Issue()
         {

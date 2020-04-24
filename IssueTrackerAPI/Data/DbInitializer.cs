@@ -128,23 +128,6 @@ namespace IssueTrackerAPI.Data
                 context.Assignees.Add(a);
             }
             context.SaveChanges();
-
-
-
-
-
-            var comments = new Comment[]
-            {
-                new Comment{ Content = "Good job", CreationDate = DateTime.Parse("2016-06-23"),
-                        IssueId = issues.Single( i => i.Title == "Problem #1").IssueId,
-                        PersonId = people.Single( i => i.LastName == "Nowak").PersonId }
-            };
-
-            foreach (Comment c in comments)
-            {
-                context.Comments.Add(c);
-            }
-            context.SaveChanges();
         }
     }
 }

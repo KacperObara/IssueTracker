@@ -20,7 +20,6 @@ namespace IssueTrackerAPI.Data
         public DbSet<Status> Statuses { get; set; }
         public DbSet<Assignee> Assignees { get; set; }
         public DbSet<ProjectMember> ProjectMembers { get; set; }
-        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -33,7 +32,6 @@ namespace IssueTrackerAPI.Data
             builder.Entity<Status>().ToTable(nameof(Status));
             builder.Entity<Assignee>().ToTable(nameof(Assignee));
             builder.Entity<ProjectMember>().ToTable(nameof(ProjectMember));
-            builder.Entity<Comment>().ToTable(nameof(Comment));
 
             builder.Entity<Assignee>()
                 .HasKey(a => new { a.IssueId, a.PersonId });
@@ -41,19 +39,9 @@ namespace IssueTrackerAPI.Data
             builder.Entity<ProjectMember>()
                 .HasKey(pm => new { pm.ProjectId, pm.PersonId });
 
-            builder.Entity<Comment>()
-                .HasKey(c => new { c.IssueId, c.PersonId });
-
             builder.Entity<Assignee>()
                  .HasOne<Person>(e => e.Person)
                  .WithMany(e => e.Assignees)
-                 .HasForeignKey(e => e.PersonId)
-                 .OnDelete(DeleteBehavior.Restrict);
-
-
-            builder.Entity<Comment>()
-                 .HasOne<Person>(e => e.Person)
-                 .WithMany(e => e.Comments)
                  .HasForeignKey(e => e.PersonId)
                  .OnDelete(DeleteBehavior.Restrict);
         }

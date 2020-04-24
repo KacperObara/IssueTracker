@@ -10,23 +10,22 @@ using IssueTrackerAPI.Models;
 
 namespace IssueTrackerAPI.Controllers
 {
-    public class CommentsController : Controller
+    public class StatusesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CommentsController(ApplicationDbContext context)
+        public StatusesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Comments
+        // GET: Statuses
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Comments.Include(c => c.Issue).Include(c => c.Person);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.Statuses.ToListAsync());
         }
 
-        // GET: Comments/Details/5
+        // GET: Statuses/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,45 +33,39 @@ namespace IssueTrackerAPI.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comments
-                .Include(c => c.Issue)
-                .Include(c => c.Person)
-                .FirstOrDefaultAsync(m => m.IssueId == id);
-            if (comment == null)
+            var status = await _context.Statuses
+                .FirstOrDefaultAsync(m => m.StatusId == id);
+            if (status == null)
             {
                 return NotFound();
             }
 
-            return View(comment);
+            return View(status);
         }
 
-        // GET: Comments/Create
+        // GET: Statuses/Create
         public IActionResult Create()
         {
-            ViewData["IssueId"] = new SelectList(_context.Issues, "IssueId", "Title");
-            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "Email");
             return View();
         }
 
-        // POST: Comments/Create
+        // POST: Statuses/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CommentId,Content,CreationDate,IssueId,PersonId")] Comment comment)
+        public async Task<IActionResult> Create([Bind("StatusId,StatusName")] Status status)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(comment);
+                _context.Add(status);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IssueId"] = new SelectList(_context.Issues, "IssueId", "Title", comment.IssueId);
-            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "Email", comment.PersonId);
-            return View(comment);
+            return View(status);
         }
 
-        // GET: Comments/Edit/5
+        // GET: Statuses/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,24 +73,22 @@ namespace IssueTrackerAPI.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comments.FindAsync(id);
-            if (comment == null)
+            var status = await _context.Statuses.FindAsync(id);
+            if (status == null)
             {
                 return NotFound();
             }
-            ViewData["IssueId"] = new SelectList(_context.Issues, "IssueId", "Title", comment.IssueId);
-            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "Email", comment.PersonId);
-            return View(comment);
+            return View(status);
         }
 
-        // POST: Comments/Edit/5
+        // POST: Statuses/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CommentId,Content,CreationDate,IssueId,PersonId")] Comment comment)
+        public async Task<IActionResult> Edit(int id, [Bind("StatusId,StatusName")] Status status)
         {
-            if (id != comment.IssueId)
+            if (id != status.StatusId)
             {
                 return NotFound();
             }
@@ -106,12 +97,12 @@ namespace IssueTrackerAPI.Controllers
             {
                 try
                 {
-                    _context.Update(comment);
+                    _context.Update(status);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CommentExists(comment.IssueId))
+                    if (!StatusExists(status.StatusId))
                     {
                         return NotFound();
                     }
@@ -122,12 +113,10 @@ namespace IssueTrackerAPI.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IssueId"] = new SelectList(_context.Issues, "IssueId", "Title", comment.IssueId);
-            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "Email", comment.PersonId);
-            return View(comment);
+            return View(status);
         }
 
-        // GET: Comments/Delete/5
+        // GET: Statuses/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,32 +124,30 @@ namespace IssueTrackerAPI.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comments
-                .Include(c => c.Issue)
-                .Include(c => c.Person)
-                .FirstOrDefaultAsync(m => m.IssueId == id);
-            if (comment == null)
+            var status = await _context.Statuses
+                .FirstOrDefaultAsync(m => m.StatusId == id);
+            if (status == null)
             {
                 return NotFound();
             }
 
-            return View(comment);
+            return View(status);
         }
 
-        // POST: Comments/Delete/5
+        // POST: Statuses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var comment = await _context.Comments.FindAsync(id);
-            _context.Comments.Remove(comment);
+            var status = await _context.Statuses.FindAsync(id);
+            _context.Statuses.Remove(status);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CommentExists(int id)
+        private bool StatusExists(int id)
         {
-            return _context.Comments.Any(e => e.IssueId == id);
+            return _context.Statuses.Any(e => e.StatusId == id);
         }
     }
 }

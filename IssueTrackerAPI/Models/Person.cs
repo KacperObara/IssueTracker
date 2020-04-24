@@ -33,7 +33,5 @@ namespace IssueTrackerAPI.Models
         public ICollection<Issue> ReportedIssues { get; set; }
         public ICollection<ProjectMember> ProjectMembers { get; set; }
         public ICollection<Assignee> Assignees { get; set; }
-        public ICollection<Comment> Comments { get; set; }
-
     }
 }
