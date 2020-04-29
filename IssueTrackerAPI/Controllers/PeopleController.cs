@@ -20,9 +20,16 @@ namespace IssueTrackerAPI.Controllers
         }
 
         // GET: People
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filter)
         {
-            return View(await _context.People.ToListAsync());
+            var people = from p in _context.People select p;
+
+            if (!String.IsNullOrEmpty(filter))
+            {
+                people = people.Where(p => p.FirstName.Contains(filter) || p.LastName.Contains(filter));
+            }
+
+            return View(await people.ToListAsync());
         }
 
         // GET: People/Details/5

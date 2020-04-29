@@ -23,7 +23,7 @@ namespace IssueTrackerAPI.Models
         {
             get
             {
-                return LastName + " " + FirstName;
+                return $"{LastName} {FirstName}";
             }
         }
         [Required(ErrorMessage = "The Email field is required.")]

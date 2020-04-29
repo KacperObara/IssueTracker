@@ -19,10 +19,18 @@ namespace IssueTrackerAPI.Controllers
             _context = context;
         }
 
+
         // GET: Issues
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filter)
         {
-            var applicationDbContext = _context.Issues.Include(i => i.Author).Include(i => i.Project).Include(i => i.Severity).Include(i => i.Status);
+            var issues = from i in _context.Issues select i;
+
+            if (!String.IsNullOrEmpty(filter))
+            {
+                issues = issues.Where(i => i.Title.Contains(filter));
+            }
+
+            var applicationDbContext = issues.Include(i => i.Author).Include(i => i.Project).Include(i => i.Severity).Include(i => i.Status);
             return View(await applicationDbContext.ToListAsync());
         }
 

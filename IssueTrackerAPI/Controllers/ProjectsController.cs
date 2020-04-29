@@ -20,13 +20,13 @@ namespace IssueTrackerAPI.Controllers
         }
 
         // GET: Projects
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string filter)
         {
             var projects = from p in _context.Projects select p;
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!String.IsNullOrEmpty(filter))
             {
-                projects = projects.Where(s => s.Title.Contains(searchString));
+                projects = projects.Where(s => s.Title.Contains(filter));
             }
 
             return View(await projects.ToListAsync());
