@@ -20,16 +20,31 @@ namespace IssueTrackerAPI.Controllers
         }
 
         // GET: People
-        public async Task<IActionResult> Index(string filter)
+        public async Task<IActionResult> Index(string sortOrder, string filter)
         {
-            var people = from p in _context.People select p;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = filter;
 
+            var people = from p in _context.People
+                           select p;
+
+            // Filtering
             if (!String.IsNullOrEmpty(filter))
             {
                 people = people.Where(p => p.FirstName.Contains(filter) || p.LastName.Contains(filter));
             }
 
-            return View(await people.ToListAsync());
+            // Sorting
+            switch (sortOrder)
+            {
+                case "people_desc":
+                    people = people.OrderByDescending(p => p.FullName);
+                    break;
+                default:
+                    people = people.OrderBy(p => p.FullName);
+                    break;
+            }
+            return View(await people.AsNoTracking().ToListAsync());
         }
 
         // GET: People/Details/5

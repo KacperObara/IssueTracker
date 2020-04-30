@@ -21,13 +21,69 @@ namespace IssueTrackerAPI.Controllers
 
 
         // GET: Issues
-        public async Task<IActionResult> Index(string filter)
+        public async Task<IActionResult> Index(string sortOrder, string filter)
         {
+            ViewData["TitleSortParm"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["AuthorSortParm"] = sortOrder == "Author" ? "author_desc" : "Author";
+            ViewData["ProjectSortParm"] = sortOrder == "Project" ? "project_desc" : "Project";
+            ViewData["SeveritySortParm"] = sortOrder == "Severity" ? "severity_desc" : "Severity";
+            ViewData["StatusSortParm"] = sortOrder == "Status" ? "status_desc" : "Status";
+            ViewData["CurrentFilter"] = filter;
+
             var issues = from i in _context.Issues select i;
 
+            // Filtering
             if (!String.IsNullOrEmpty(filter))
             {
                 issues = issues.Where(i => i.Title.Contains(filter));
+            }
+
+            // Sorting
+            switch (sortOrder)
+            {
+                case "title_desc":
+                    issues = issues.OrderByDescending(i => i.Title);
+                    break;
+
+                case "Date":
+                    issues = issues.OrderBy(i => i.CreationDate);
+                    break;
+                case "date_desc":
+                    issues = issues.OrderByDescending(i => i.CreationDate);
+                    break;     
+                    
+                case "Author":
+                    issues = issues.OrderBy(i => i.Author);
+                    break;
+                case "author_desc":
+                    issues = issues.OrderByDescending(i => i.Author);
+                    break;
+
+                case "Project":
+                    issues = issues.OrderBy(i => i.Project);
+                    break;
+                case "project_desc":
+                    issues = issues.OrderByDescending(i => i.Project);
+                    break;
+
+                case "Severity":
+                    issues = issues.OrderBy(i => i.Severity);
+                    break;
+                case "severity_desc":
+                    issues = issues.OrderByDescending(i => i.Severity);
+                    break;
+
+                case "Status":
+                    issues = issues.OrderBy(i => i.Status);
+                    break;
+                case "status_desc":
+                    issues = issues.OrderByDescending(i => i.Status);
+                    break;
+
+                default:
+                    issues = issues.OrderBy(i => i.Title);
+                    break;
             }
 
             var applicationDbContext = issues.Include(i => i.Author).Include(i => i.Project).Include(i => i.Severity).Include(i => i.Status);
