@@ -20,17 +20,40 @@ namespace IssueTrackerAPI.Controllers
         }
 
         // GET: Projects
-        public async Task<IActionResult> Index(string filter)
+        public async Task<IActionResult> Index(string sortOrder, string filter)
         {
-            var projects = from p in _context.Projects select p;
+            ViewData["TitleSortParm"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["CurrentFilter"] = filter;
 
+            var projects = from p in _context.Projects
+                           select p;
+
+            // Filtering
             if (!String.IsNullOrEmpty(filter))
             {
-                projects = projects.Where(s => s.Title.Contains(filter));
+                projects = projects.Where(p => p.Title.Contains(filter));
             }
 
-            return View(await projects.ToListAsync());
+            // Sorting
+            switch (sortOrder)
+            {
+                case "title_desc":
+                    projects = projects.OrderByDescending(p => p.Title);
+                    break;
+                case "Date":
+                    projects = projects.OrderBy(p => p.CreationDate);
+                    break;
+                case "date_desc":
+                    projects = projects.OrderByDescending(p => p.CreationDate);
+                    break;
+                default:
+                    projects = projects.OrderBy(p => p.Title);
+                    break;
+            }
+            return View(await projects.AsNoTracking().ToListAsync());
         }
+
 
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
