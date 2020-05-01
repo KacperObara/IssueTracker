@@ -18,7 +18,6 @@ namespace IssueTrackerAPI.Data
             }
 
 
-
             var projects = new Project[]
             {
                 new Project{Title = "Project #1", Description = "Very long description", CreationDate = DateTime.Parse("2007-09-01")},
