@@ -51,6 +51,7 @@ namespace IssueTrackerAPI.Controllers
                     projects = projects.OrderBy(p => p.Title);
                     break;
             }
+
             return View(await projects.AsNoTracking().ToListAsync());
         }
 
