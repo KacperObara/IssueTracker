@@ -50,7 +50,7 @@ namespace IssueTrackerAPI.Controllers
         public IActionResult Create()
         {
             ViewData["IssueId"] = new SelectList(_context.Issues, "IssueId", "Title");
-            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "Email");
+            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "FullName");
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace IssueTrackerAPI.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IssueId"] = new SelectList(_context.Issues, "IssueId", "Title", assignee.IssueId);
-            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "Email", assignee.PersonId);
+            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "FullName", assignee.PersonId);
             return View(assignee);
         }
 
@@ -86,7 +86,7 @@ namespace IssueTrackerAPI.Controllers
                 return NotFound();
             }
             ViewData["IssueId"] = new SelectList(_context.Issues, "IssueId", "Title", assignee.IssueId);
-            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "Email", assignee.PersonId);
+            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "FullName", assignee.PersonId);
             return View(assignee);
         }
 
@@ -123,7 +123,7 @@ namespace IssueTrackerAPI.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IssueId"] = new SelectList(_context.Issues, "IssueId", "Title", assignee.IssueId);
-            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "Email", assignee.PersonId);
+            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "FullName", assignee.PersonId);
             return View(assignee);
         }
 

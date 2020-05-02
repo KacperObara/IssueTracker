@@ -49,7 +49,7 @@ namespace IssueTrackerAPI.Controllers
         // GET: ProjectMembers/Create
         public IActionResult Create()
         {
-            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "Email");
+            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "FullName");
             ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title");
             return View();
         }
@@ -67,7 +67,7 @@ namespace IssueTrackerAPI.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "Email", projectMember.PersonId);
+            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "FullName", projectMember.PersonId);
             ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", projectMember.ProjectId);
             return View(projectMember);
         }
@@ -85,7 +85,7 @@ namespace IssueTrackerAPI.Controllers
             {
                 return NotFound();
             }
-            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "Email", projectMember.PersonId);
+            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "FullName", projectMember.PersonId);
             ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", projectMember.ProjectId);
             return View(projectMember);
         }
@@ -122,7 +122,7 @@ namespace IssueTrackerAPI.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "Email", projectMember.PersonId);
+            ViewData["PersonId"] = new SelectList(_context.People, "PersonId", "FullName", projectMember.PersonId);
             ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", projectMember.ProjectId);
             return View(projectMember);
         }

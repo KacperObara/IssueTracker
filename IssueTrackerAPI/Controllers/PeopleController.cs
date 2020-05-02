@@ -38,10 +38,10 @@ namespace IssueTrackerAPI.Controllers
             switch (sortOrder)
             {
                 case "people_desc":
-                    people = people.OrderByDescending(p => p.FullName);
+                    people = people.OrderByDescending(p => p.LastName);
                     break;
                 default:
-                    people = people.OrderBy(p => p.FullName);
+                    people = people.OrderBy(p => p.LastName);
                     break;
             }
             return View(await people.AsNoTracking().ToListAsync());
