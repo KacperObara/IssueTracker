@@ -104,6 +104,7 @@ namespace IssueTrackerAPI.Controllers
                 .Include(i => i.Severity)
                 .Include(i => i.Status)
                 .FirstOrDefaultAsync(m => m.IssueId == id);
+
             if (issue == null)
             {
                 return NotFound();
@@ -115,10 +116,9 @@ namespace IssueTrackerAPI.Controllers
         // GET: Issues/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.People, "PersonId", "Email");
+            ViewData["AuthorId"] = new SelectList(_context.People, "PersonId", "FullName");
             ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title");
             ViewData["SeverityId"] = new SelectList(_context.Severities, "SeverityId", "SeverityName");
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusName");
             return View();
         }
 
@@ -129,16 +129,16 @@ namespace IssueTrackerAPI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IssueId,Title,Description,CreationDate,AuthorId,ProjectId,SeverityId,StatusId")] Issue issue)
         {
+            issue.StatusId = _context.Statuses.Single(s => s.StatusName == "Open").StatusId;
             if (ModelState.IsValid)
             {
                 _context.Add(issue);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.People, "PersonId", "Email", issue.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.People, "PersonId", "FullName", issue.AuthorId);
             ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", issue.ProjectId);
             ViewData["SeverityId"] = new SelectList(_context.Severities, "SeverityId", "SeverityName", issue.SeverityId);
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusName", issue.StatusId);
             return View(issue);
         }
 
