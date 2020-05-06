@@ -2,9 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace IssueTrackerAPI.Models
 {
+    public class ProjectViewModel
+    {
+        public Project Project { get; set; }
+        public int TotalAvailable { get { return Project.Issues.Count; } }
+    }
+
     [Authorize]
     public class Project
     {
@@ -21,6 +28,17 @@ namespace IssueTrackerAPI.Models
         public DateTime CreationDate { get; set; }
         public ICollection<Issue> Issues { get; set; }
         public ICollection<ProjectMember> ProjectMembers { get; set; }
+
+        public int IssuesCount
+        {
+            get
+            {
+                if (Issues != null)
+                    return Issues.Count;
+                else
+                    return 0;
+            }
+        }
 
         public Project()
         {

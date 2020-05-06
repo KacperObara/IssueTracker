@@ -23,11 +23,14 @@ namespace IssueTrackerAPI.Controllers
         public async Task<IActionResult> Index(string sortOrder, string filter)
         {
             ViewData["TitleSortParm"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+            ViewData["IssueCountSortParm"] = sortOrder == "IssueCount" ? "issueCount_desc" : "IssueCount";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
             ViewData["CurrentFilter"] = filter;
 
             var projects = from p in _context.Projects
                            select p;
+
+            var projectViewModel = new ProjectViewModel();
 
             // Filtering
             if (!String.IsNullOrEmpty(filter))
@@ -40,6 +43,12 @@ namespace IssueTrackerAPI.Controllers
             {
                 case "title_desc":
                     projects = projects.OrderByDescending(p => p.Title);
+                    break;
+                case "IssueCount":
+                    projects = projects.OrderBy(p => p.IssuesCount);
+                    break;
+                case "issueCount_desc":
+                    projects = projects.OrderByDescending(p => p.IssuesCount);
                     break;
                 case "Date":
                     projects = projects.OrderBy(p => p.CreationDate);
