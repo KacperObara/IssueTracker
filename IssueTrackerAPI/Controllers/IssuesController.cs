@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IssueTrackerAPI.Data;
 using IssueTrackerAPI.Models;
+using OfficeOpenXml;
+using Microsoft.AspNetCore.Http;
 
 namespace IssueTrackerAPI.Controllers
 {
@@ -237,6 +239,64 @@ namespace IssueTrackerAPI.Controllers
         private bool IssueExists(int id)
         {
             return _context.Issues.Any(e => e.IssueId == id);
+        }
+
+        public IActionResult ExportToExcel()
+        {
+            var issues = from i in _context.Issues select i;
+            issues.Include(i => i.Author).Include(i => i.Project).Include(i => i.Severity).Include(i => i.Status);
+
+            byte[] fileContents;
+
+            ExcelPackage Ep = new ExcelPackage();
+            ExcelWorksheet Sheet = Ep.Workbook.Worksheets.Add("Issues");
+            Sheet.Cells["A1"].Value = "Title";
+            Sheet.Cells["B1"].Value = "Description";
+            Sheet.Cells["C1"].Value = "Creation date";
+            Sheet.Cells["D1"].Value = "Author";
+            Sheet.Cells["E1"].Value = "Project";
+            Sheet.Cells["F1"].Value = "Assignees";
+            Sheet.Cells["G1"].Value = "Severity";
+            Sheet.Cells["H1"].Value = "Status";
+
+
+            int row = 2;
+            foreach (var item in issues)
+            {
+                Sheet.Cells[string.Format("A{0}", row)].Value = item.Title;
+                Sheet.Cells[string.Format("B{0}", row)].Value = item.Description;
+                Sheet.Cells[string.Format("C{0}", row)].Value = item.CreationDate.ToString();
+                Sheet.Cells[string.Format("D{0}", row)].Value = item.Author.FullName;
+                Sheet.Cells[string.Format("E{0}", row)].Value = item.Project.Title;
+
+                string assignees = "";
+                foreach (Assignee assignee in item.Assignees)
+                {
+                    assignees += assignee.Person.FullName + "\n";
+                }
+                Sheet.Cells[string.Format("F{0}", row)].Value = assignees;
+
+                Sheet.Cells[string.Format("G{0}", row)].Value = item.Severity.SeverityName;
+                Sheet.Cells[string.Format("H{0}", row)].Value = item.Status.StatusName;
+                row++;
+            }
+
+
+            Sheet.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            fileContents = Ep.GetAsByteArray();
+
+            if (fileContents == null || fileContents.Length == 0)
+            {
+                return NotFound();
+            }
+
+            return File(
+                fileContents: fileContents,
+                contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                fileDownloadName: "Issues.xlsx"
+            );
         }
     }
 }
