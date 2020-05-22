@@ -243,8 +243,12 @@ namespace IssueTrackerAPI.Controllers
 
         public IActionResult ExportToExcel()
         {
-            var issues = from i in _context.Issues select i;
-            issues.Include(i => i.Author).Include(i => i.Project).Include(i => i.Severity).Include(i => i.Status);
+            var issues = _context.Issues
+                .Include(i => i.Author)
+                .Include(i => i.Project)
+                .Include(i => i.Severity)
+                .Include(i => i.Assignees)
+                .Include(i => i.Status).ToList();
 
             byte[] fileContents;
 
