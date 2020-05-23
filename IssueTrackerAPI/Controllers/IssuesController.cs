@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -217,6 +216,7 @@ namespace IssueTrackerAPI.Controllers
                 .Include(i => i.Severity)
                 .Include(i => i.Status)
                 .FirstOrDefaultAsync(m => m.IssueId == id);
+
             if (issue == null)
             {
                 return NotFound();

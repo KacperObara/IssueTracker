@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IssueTrackerAPI.Data;
 using IssueTrackerAPI.Models;
@@ -30,7 +28,8 @@ namespace IssueTrackerAPI.Controllers
             var projects = from p in _context.Projects
                            select p;
 
-            var projectViewModel = new ProjectViewModel();
+            projects.Include(p => p.Issues)
+                    .Include(p => p.IssuesCount);
 
             // Filtering
             if (!String.IsNullOrEmpty(filter))
