@@ -22,8 +22,7 @@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["TitleSortParm"]">@Html.DisplayNameFor(model => model.Title)</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["IssueCountSortParm"]">@Html.DisplayNameFor(model => model.IssuesCount)</a>
-                @*@Html.DisplayNameFor(model => model.IssuesCount)*@
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["IssueCountSortParm"]">@Html.DisplayNameFor(model => model.Issues.Count)</a>
             </th>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.CreationDate)</a>
@@ -38,7 +37,7 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IssuesCount)
+                @Html.DisplayFor(modelItem => item.Issues.Count)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreationDate)

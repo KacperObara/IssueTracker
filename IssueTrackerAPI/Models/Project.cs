@@ -23,17 +23,6 @@ namespace IssueTrackerAPI.Models
         public ICollection<Issue> Issues { get; set; }
         public ICollection<ProjectMember> ProjectMembers { get; set; }
 
-        public int IssuesCount
-        {
-            get
-            {
-                if (Issues != null)
-                    return Issues.Count;
-                else
-                    return -1;
-            }
-        }
-
         public Project()
         {
             this.CreationDate = DateTime.UtcNow;

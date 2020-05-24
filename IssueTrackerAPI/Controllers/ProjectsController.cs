@@ -25,11 +25,7 @@ namespace IssueTrackerAPI.Controllers
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
             ViewData["CurrentFilter"] = filter;
 
-            var projects = from p in _context.Projects
-                           select p;
-
-            projects.Include(p => p.Issues)
-                    .Include(p => p.IssuesCount);
+            var projects = _context.Projects.Include(p => p.Issues).AsQueryable();
 
             // Filtering
             if (!String.IsNullOrEmpty(filter))
@@ -44,10 +40,10 @@ namespace IssueTrackerAPI.Controllers
                     projects = projects.OrderByDescending(p => p.Title);
                     break;
                 case "IssueCount":
-                    projects = projects.OrderBy(p => p.IssuesCount);
+                    projects = projects.OrderBy(p => p.Issues.Count);
                     break;
                 case "issueCount_desc":
-                    projects = projects.OrderByDescending(p => p.IssuesCount);
+                    projects = projects.OrderByDescending(p => p.Issues.Count);
                     break;
                 case "Date":
                     projects = projects.OrderBy(p => p.CreationDate);
