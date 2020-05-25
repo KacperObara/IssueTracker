@@ -24,23 +24,36 @@ namespace IssueTrackerAPI.Controllers
         // GET: Issues
         public async Task<IActionResult> Index(string sortOrder, string filter)
         {
+            var issues = from i in _context.Issues select i;
+
+            issues = Filter(issues, filter);
+            issues = Sort(issues, sortOrder);
+
+            var applicationDbContext = issues.Include(i => i.Author).Include(i => i.Project).Include(i => i.Severity).Include(i => i.Status);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+        private IQueryable<Issue> Filter(IQueryable<Issue> issues, string filter)
+        {
+            ViewData["CurrentFilter"] = filter;
+
+            if (!String.IsNullOrEmpty(filter))
+            {
+                issues = issues.Where(i => i.Title.Contains(filter) || i.Project.Title.Contains(filter));
+            }
+
+            return issues;
+        }
+
+        private IQueryable<Issue> Sort(IQueryable<Issue> issues, string sortOrder)
+        {
             ViewData["TitleSortParm"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
             ViewData["AuthorSortParm"] = sortOrder == "Author" ? "author_desc" : "Author";
             ViewData["ProjectSortParm"] = sortOrder == "Project" ? "project_desc" : "Project";
             ViewData["SeveritySortParm"] = sortOrder == "Severity" ? "severity_desc" : "Severity";
             ViewData["StatusSortParm"] = sortOrder == "Status" ? "status_desc" : "Status";
-            ViewData["CurrentFilter"] = filter;
 
-            var issues = from i in _context.Issues select i;
-
-            // Filtering
-            if (!String.IsNullOrEmpty(filter))
-            {
-                issues = issues.Where(i => i.Title.Contains(filter));
-            }
-
-            // Sorting
             switch (sortOrder)
             {
                 case "title_desc":
@@ -52,8 +65,8 @@ namespace IssueTrackerAPI.Controllers
                     break;
                 case "date_desc":
                     issues = issues.OrderByDescending(i => i.CreationDate);
-                    break;     
-                    
+                    break;
+
                 case "Author":
                     issues = issues.OrderBy(i => i.Author);
                     break;
@@ -87,8 +100,7 @@ namespace IssueTrackerAPI.Controllers
                     break;
             }
 
-            var applicationDbContext = issues.Include(i => i.Author).Include(i => i.Project).Include(i => i.Severity).Include(i => i.Status);
-            return View(await applicationDbContext.ToListAsync());
+            return issues;
         }
 
         // GET: Issues/Details/5
