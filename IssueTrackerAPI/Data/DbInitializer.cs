@@ -18,9 +18,9 @@ namespace IssueTrackerAPI.Data
 
             var projects = new Project[]
             {
-                new Project{Title = "Project #1", Description = "Very long description", CreationDate = DateTime.Parse("2007-09-01")},
-                new Project{Title = "Project #2", Description = "long description", CreationDate = DateTime.Parse("2012-11-05")},
-                new Project{Title = "Project #3", Description = "description", CreationDate = DateTime.Parse("2015-06-23")}
+                new Project{Title = "Project #1", Description = "Very long description", LastEditDate = DateTime.Parse("2007-09-01")},
+                new Project{Title = "Project #2", Description = "long description", LastEditDate = DateTime.Parse("2012-11-05")},
+                new Project{Title = "Project #3", Description = "description", LastEditDate = DateTime.Parse("2015-06-23")}
             };
 
             foreach (Project p in projects)

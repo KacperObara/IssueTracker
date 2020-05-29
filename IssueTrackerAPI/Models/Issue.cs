@@ -15,8 +15,8 @@ namespace IssueTrackerAPI.Models
         public string Description { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Creation Date")]
-        public DateTime CreationDate { get; set; }
+        [Display(Name = "Last edit date")]
+        public DateTime LastEditDate { get; set; }
         public int AuthorId { get; set; }
         public Person Author { get; set; }
         public int ProjectId { get; set; }
@@ -30,7 +30,7 @@ namespace IssueTrackerAPI.Models
 
         public Issue()
         {
-            this.CreationDate = DateTime.UtcNow;
+            this.LastEditDate = DateTime.UtcNow;
         }
     }
 }

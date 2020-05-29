@@ -20,7 +20,6 @@ namespace IssueTrackerAPI.Controllers
             _context = context;
         }
 
-
         // GET: Issues
         public async Task<IActionResult> Index(string sortOrder, string filter)
         {
@@ -61,10 +60,10 @@ namespace IssueTrackerAPI.Controllers
                     break;
 
                 case "Date":
-                    issues = issues.OrderBy(i => i.CreationDate);
+                    issues = issues.OrderBy(i => i.LastEditDate);
                     break;
                 case "date_desc":
-                    issues = issues.OrderByDescending(i => i.CreationDate);
+                    issues = issues.OrderByDescending(i => i.LastEditDate);
                     break;
 
                 case "Author":
@@ -140,7 +139,7 @@ namespace IssueTrackerAPI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IssueId,Title,Description,CreationDate,AuthorId,ProjectId,SeverityId,StatusId")] Issue issue)
+        public async Task<IActionResult> Create([Bind("IssueId,Title,Description,LastEditDate,AuthorId,ProjectId,SeverityId,StatusId")] Issue issue)
         {
             issue.StatusId = _context.Statuses.Single(s => s.StatusName == "Open").StatusId;
             if (ModelState.IsValid)
@@ -164,11 +163,12 @@ namespace IssueTrackerAPI.Controllers
             }
 
             var issue = await _context.Issues.FindAsync(id);
+
             if (issue == null)
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.People, "PersonId", "Email", issue.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.People, "PersonId", "FullName", issue.AuthorId);
             ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", issue.ProjectId);
             ViewData["SeverityId"] = new SelectList(_context.Severities, "SeverityId", "SeverityName", issue.SeverityId);
             ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusName", issue.StatusId);
@@ -180,7 +180,7 @@ namespace IssueTrackerAPI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IssueId,Title,Description,CreationDate,AuthorId,ProjectId,SeverityId,StatusId")] Issue issue)
+        public async Task<IActionResult> Edit(int id, [Bind("IssueId,Title,Description,LastEditDate,AuthorId,ProjectId,SeverityId,StatusId")] Issue issue)
         {
             if (id != issue.IssueId)
             {
@@ -207,7 +207,7 @@ namespace IssueTrackerAPI.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.People, "PersonId", "Email", issue.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.People, "PersonId", "FullName", issue.AuthorId);
             ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", issue.ProjectId);
             ViewData["SeverityId"] = new SelectList(_context.Severities, "SeverityId", "SeverityName", issue.SeverityId);
             ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusName", issue.StatusId);
@@ -268,7 +268,7 @@ namespace IssueTrackerAPI.Controllers
             ExcelWorksheet Sheet = Ep.Workbook.Worksheets.Add("Issues");
             Sheet.Cells["A1"].Value = "Title";
             Sheet.Cells["B1"].Value = "Description";
-            Sheet.Cells["C1"].Value = "Creation date";
+            Sheet.Cells["C1"].Value = "Last edit date";
             Sheet.Cells["D1"].Value = "Author";
             Sheet.Cells["E1"].Value = "Project";
             Sheet.Cells["F1"].Value = "Assignees";
@@ -281,16 +281,17 @@ namespace IssueTrackerAPI.Controllers
             {
                 Sheet.Cells[string.Format("A{0}", row)].Value = item.Title;
                 Sheet.Cells[string.Format("B{0}", row)].Value = item.Description;
-                Sheet.Cells[string.Format("C{0}", row)].Value = item.CreationDate.ToString();
+                Sheet.Cells[string.Format("C{0}", row)].Value = item.LastEditDate.ToString();
                 Sheet.Cells[string.Format("D{0}", row)].Value = item.Author.FullName;
                 Sheet.Cells[string.Format("E{0}", row)].Value = item.Project.Title;
 
-                string assignees = "";
-                foreach (Assignee assignee in item.Assignees)
-                {
-                    assignees += assignee.Person.FullName + "\n";
-                }
-                Sheet.Cells[string.Format("F{0}", row)].Value = assignees;
+                // TODO: Fix error null Person
+                //string assignees = "";
+                //foreach (Assignee assignee in item.Assignees)
+                //{
+                //    assignees += assignee.Person.FullName + "\n";
+                //}
+                //Sheet.Cells[string.Format("F{0}", row)].Value = assignees;
 
                 Sheet.Cells[string.Format("G{0}", row)].Value = item.Severity.SeverityName;
                 Sheet.Cells[string.Format("H{0}", row)].Value = item.Status.StatusName;

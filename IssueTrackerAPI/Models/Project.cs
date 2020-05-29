@@ -19,13 +19,13 @@ namespace IssueTrackerAPI.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Creation Date")]
-        public DateTime CreationDate { get; set; }
+        public DateTime LastEditDate { get; set; }
         public ICollection<Issue> Issues { get; set; }
         public ICollection<ProjectMember> ProjectMembers { get; set; }
 
         public Project()
         {
-            this.CreationDate = DateTime.UtcNow;
+            this.LastEditDate = DateTime.UtcNow;
         }
     }
 }

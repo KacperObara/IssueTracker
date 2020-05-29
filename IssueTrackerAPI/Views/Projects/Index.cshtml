@@ -25,7 +25,7 @@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["IssueCountSortParm"]">@Html.DisplayNameFor(model => model.Issues.Count)</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.CreationDate)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.LastEditDate)</a>
             </th>
             <th></th>
         </tr>
@@ -40,7 +40,7 @@
                 @Html.DisplayFor(modelItem => item.Issues.Count)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
+                @Html.DisplayFor(modelItem => item.LastEditDate)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a>

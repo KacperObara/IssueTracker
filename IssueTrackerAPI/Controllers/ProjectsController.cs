@@ -46,10 +46,10 @@ namespace IssueTrackerAPI.Controllers
                     projects = projects.OrderByDescending(p => p.Issues.Count);
                     break;
                 case "Date":
-                    projects = projects.OrderBy(p => p.CreationDate);
+                    projects = projects.OrderBy(p => p.LastEditDate);
                     break;
                 case "date_desc":
-                    projects = projects.OrderByDescending(p => p.CreationDate);
+                    projects = projects.OrderByDescending(p => p.LastEditDate);
                     break;
                 default:
                     projects = projects.OrderBy(p => p.Title);
@@ -89,7 +89,7 @@ namespace IssueTrackerAPI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProjectId,Title,Description,CreationDate")] Project project)
+        public async Task<IActionResult> Create([Bind("ProjectId,Title,Description,LastEditDate")] Project project)
         {
             if (ModelState.IsValid)
             {
@@ -121,7 +121,7 @@ namespace IssueTrackerAPI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProjectId,Title,Description,CreationDate")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("ProjectId,Title,Description,LastEditDate")] Project project)
         {
             if (id != project.ProjectId)
             {
