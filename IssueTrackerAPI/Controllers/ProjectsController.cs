@@ -70,6 +70,7 @@ namespace IssueTrackerAPI.Controllers
 
             var project = await _context.Projects
                 .FirstOrDefaultAsync(m => m.ProjectId == id);
+
             if (project == null)
             {
                 return NotFound();
