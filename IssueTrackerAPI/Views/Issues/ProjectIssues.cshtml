@@ -1,0 +1,80 @@
+﻿@model IEnumerable<IssueTrackerAPI.Models.Issue>
+
+@{
+    ViewData["Title"] = "Issues";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<p>
+    <a> @ViewData["Description"] </a>
+</p>
+
+<div class="text-right" style="overflow:hidden;position:absolute;padding:1px 0px 0px 0px;right: 350px;">
+    <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("ExportToExcel", "Issues")'">Export To Excel</button>
+</div>
+<form asp-controller="Issues" asp-action="Index" method="get">
+    <p>
+        Title: <input type="text" name="filter">
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr align="center">
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["TitleSortParm"]">@Html.DisplayNameFor(model => model.Title)</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ProjectSortParm"]">@Html.DisplayNameFor(model => model.Project)</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.LastEditDate)</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["AuthorSortParm"]">@Html.DisplayNameFor(model => model.Author)</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SeveritySortParm"]">@Html.DisplayNameFor(model => model.Severity)</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["StatusSortParm"]">@Html.DisplayNameFor(model => model.Status)</a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr align="center">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Project.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastEditDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Severity.SeverityName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status.StatusName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IssueId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.IssueId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IssueId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

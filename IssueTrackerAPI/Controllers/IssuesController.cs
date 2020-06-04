@@ -8,6 +8,7 @@ using IssueTrackerAPI.Data;
 using IssueTrackerAPI.Models;
 using OfficeOpenXml;
 using Microsoft.AspNetCore.Http;
+using System.Diagnostics;
 
 namespace IssueTrackerAPI.Controllers
 {
@@ -100,6 +101,18 @@ namespace IssueTrackerAPI.Controllers
             }
 
             return issues;
+        }
+
+        public async Task<IActionResult> ProjectIssues(string filter, string ProjectDescription)
+        {
+            ViewData["Description"] = ProjectDescription;
+
+            var issues = from i in _context.Issues select i;
+
+            issues = Filter(issues, filter);
+
+            var applicationDbContext = issues.Include(i => i.Author).Include(i => i.Project).Include(i => i.Severity).Include(i => i.Status);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Issues/Details/5
