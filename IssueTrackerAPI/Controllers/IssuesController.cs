@@ -103,9 +103,13 @@ namespace IssueTrackerAPI.Controllers
             return issues;
         }
 
-        public async Task<IActionResult> ProjectIssues(string filter, string ProjectDescription)
+        public async Task<IActionResult> ProjectIssues(int ProjectId, string filter)
         {
-            ViewData["Description"] = ProjectDescription;
+            Project project = await _context.Projects
+                .FirstOrDefaultAsync(m => m.ProjectId == ProjectId);
+
+            ViewData["ProjectTitle"] = project.Title;
+            ViewData["ProjectDescription"] = project.Description;
 
             var issues = from i in _context.Issues select i;
 

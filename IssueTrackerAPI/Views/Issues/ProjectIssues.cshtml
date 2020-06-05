@@ -1,17 +1,14 @@
 ﻿@model IEnumerable<IssueTrackerAPI.Models.Issue>
 
-@{
-    ViewData["Title"] = "Issues";
-}
 
-<h1>Index</h1>
+<h1>@ViewData["ProjectTitle"] Issues</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Add new Issue</a>
 </p>
 
 <p>
-    <a> @ViewData["Description"] </a>
+    <a> @ViewData["ProjectDescription"] </a>
 </p>
 
 <div class="text-right" style="overflow:hidden;position:absolute;padding:1px 0px 0px 0px;right: 350px;">
@@ -28,9 +25,6 @@
         <tr align="center">
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["TitleSortParm"]">@Html.DisplayNameFor(model => model.Title)</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["ProjectSortParm"]">@Html.DisplayNameFor(model => model.Project)</a>
             </th>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.LastEditDate)</a>
@@ -53,9 +47,6 @@
             <tr align="center">
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Project.Title)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LastEditDate)
