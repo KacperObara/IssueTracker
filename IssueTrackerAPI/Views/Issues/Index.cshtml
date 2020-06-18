@@ -4,10 +4,10 @@
     ViewData["Title"] = "Issues";
 }
 
-<h1>Index</h1>
+<h1>Issues</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create new issue</a>
 </p>
 <div class="text-right" style="overflow:hidden;position:absolute;padding:1px 0px 0px 0px;right: 350px;">
     <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("ExportToExcel", "Issues")'">Export To Excel</button>
@@ -65,8 +65,10 @@
                     @Html.DisplayFor(modelItem => item.Status.StatusName)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.IssueId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.IssueId">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@item.IssueId">Edit</a> 
+                    |
+                    <a asp-action="Details" asp-route-id="@item.IssueId">Details</a> 
+                    |
                     <a asp-action="Delete" asp-route-id="@item.IssueId">Delete</a>
                 </td>
             </tr>

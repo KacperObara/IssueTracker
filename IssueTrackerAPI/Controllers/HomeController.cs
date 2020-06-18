@@ -19,11 +19,6 @@ namespace IssueTrackerAPI.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
         public IActionResult Severity()
         {
             return View();

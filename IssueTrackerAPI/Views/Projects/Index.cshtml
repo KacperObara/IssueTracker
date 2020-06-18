@@ -7,7 +7,7 @@
 <h1>Projects</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create new project</a>
 </p>
 <form asp-controller="Projects" asp-action="Index" method="get">
     <p>
@@ -44,8 +44,9 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a>
-                @*<a asp-area="" asp-controller="Issues" asp-route-filter="@item.Title" asp-action="Index">Issues</a>*@
+                |
                 <a asp-area="" asp-controller="Issues" asp-route-projectId="@item.ProjectId" asp-route-filter="@item.Title" asp-action="ProjectIssues">Issues</a>
+                |
                 <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
             </td>
         </tr>

@@ -18,7 +18,7 @@ namespace IssueTrackerAPI.Models
         public string Description { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Creation Date")]
+        [Display(Name = "Last edit date")]
         public DateTime LastEditDate { get; set; }
         public ICollection<Issue> Issues { get; set; }
         public ICollection<ProjectMember> ProjectMembers { get; set; }
