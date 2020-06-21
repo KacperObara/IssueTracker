@@ -117,7 +117,10 @@ namespace IssueTrackerAPI.Data
             {
                 new Assignee{
                     IssueId = issues.Single( i => i.Title == "Problem #1").IssueId,
-                    PersonId = people.Single( i => i.LastName == "Kowalski").PersonId }
+                    PersonId = people.Single( i => i.LastName == "Kowalski").PersonId },
+                new Assignee{
+                    IssueId = issues.Single( i => i.Title == "Problem #1").IssueId,
+                    PersonId = people.Single( i => i.LastName == "Nowak").PersonId }
             };
 
             foreach (Assignee a in assignees)

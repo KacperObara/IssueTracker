@@ -314,7 +314,7 @@ namespace IssueTrackerAPI.Controllers
                 string assignees = "";
                 foreach (Assignee assignee in item.Assignees)
                 {
-                    assignees += assignee.Person.FullName + "\n";
+                    assignees += assignee.Person.FullName + "\r\n";
                 }
                 Sheet.Cells[string.Format("F{0}", row)].Value = assignees;
 
