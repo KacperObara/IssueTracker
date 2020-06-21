@@ -115,7 +115,11 @@ namespace IssueTrackerAPI.Controllers
 
             issues = Filter(issues, filter);
 
-            var applicationDbContext = issues.Include(i => i.Author).Include(i => i.Project).Include(i => i.Severity).Include(i => i.Status);
+            var applicationDbContext = issues
+                .Include(i => i.Author)
+                .Include(i => i.Project)
+                .Include(i => i.Severity)
+                .Include(i => i.Status);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -132,7 +136,11 @@ namespace IssueTrackerAPI.Controllers
                 .Include(i => i.Project)
                 .Include(i => i.Severity)
                 .Include(i => i.Status)
+                .Include(i => i.Assignees)
+                .ThenInclude(c => c.Person)
                 .FirstOrDefaultAsync(m => m.IssueId == id);
+
+            Debug.WriteLine(issue.Assignees.ElementAt(0).Person.FullName);
 
             if (issue == null)
             {
@@ -277,6 +285,7 @@ namespace IssueTrackerAPI.Controllers
                 .Include(i => i.Project)
                 .Include(i => i.Severity)
                 .Include(i => i.Assignees)
+                .ThenInclude(c => c.Person)
                 .Include(i => i.Status).ToList();
 
             byte[] fileContents;
@@ -302,13 +311,12 @@ namespace IssueTrackerAPI.Controllers
                 Sheet.Cells[string.Format("D{0}", row)].Value = item.Author.FullName;
                 Sheet.Cells[string.Format("E{0}", row)].Value = item.Project.Title;
 
-                // TODO: Fix error null Person
-                //string assignees = "";
-                //foreach (Assignee assignee in item.Assignees)
-                //{
-                //    assignees += assignee.Person.FullName + "\n";
-                //}
-                //Sheet.Cells[string.Format("F{0}", row)].Value = assignees;
+                string assignees = "";
+                foreach (Assignee assignee in item.Assignees)
+                {
+                    assignees += assignee.Person.FullName + "\n";
+                }
+                Sheet.Cells[string.Format("F{0}", row)].Value = assignees;
 
                 Sheet.Cells[string.Format("G{0}", row)].Value = item.Severity.SeverityName;
                 Sheet.Cells[string.Format("H{0}", row)].Value = item.Status.StatusName;
