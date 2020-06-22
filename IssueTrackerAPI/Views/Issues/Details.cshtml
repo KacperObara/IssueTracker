@@ -56,12 +56,15 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Assignees)
         </dt>
-        @foreach (var assignee in Model.Assignees)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AssigneesNames)
+        </dd>
+        @*@foreach (var assignee in Model.Assignees)
         {
             <dd class="col-sm-10">
-                @Html.DisplayFor(modelItem => assignee.Person.FullName)
+                @Html.DisplayFor(modelItem => assignee.Person.FullName),
             </dd>
-        }
+        }*@
     </dl>
 </div>
 <div>

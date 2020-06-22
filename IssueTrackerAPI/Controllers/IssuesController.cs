@@ -137,7 +137,8 @@ namespace IssueTrackerAPI.Controllers
                 .Include(i => i.Severity)
                 .Include(i => i.Status)
                 .Include(i => i.Assignees)
-                .ThenInclude(c => c.Person)
+                //.Include(i => i.Assignees.Select(p => p.Person))
+                .ThenInclude(p => p.Person)
                 .FirstOrDefaultAsync(m => m.IssueId == id);
 
             Debug.WriteLine(issue.Assignees.ElementAt(0).Person.FullName);
@@ -285,7 +286,7 @@ namespace IssueTrackerAPI.Controllers
                 .Include(i => i.Project)
                 .Include(i => i.Severity)
                 .Include(i => i.Assignees)
-                .ThenInclude(c => c.Person)
+                .ThenInclude(p => p.Person)
                 .Include(i => i.Status).ToList();
 
             byte[] fileContents;

@@ -28,6 +28,21 @@ namespace IssueTrackerAPI.Models
 
         public ICollection<Assignee> Assignees { get; set; }
 
+        [Display(Name = "Assignees")]
+        public string AssigneesNames
+        {
+            get
+            {
+                string assignees = "| ";
+                foreach (Assignee assignee in Assignees)
+                {
+                    assignees += $"{assignee.Person.FullName} | ";
+                }
+
+                return assignees;
+            }
+        }
+
         public Issue()
         {
             this.LastEditDate = DateTime.UtcNow;
