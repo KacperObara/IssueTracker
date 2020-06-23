@@ -43,6 +43,24 @@
                 <select asp-for="StatusId" class="form-control" asp-items="ViewBag.StatusId"></select>
                 <span asp-validation-for="StatusId" class="text-danger"></span>
             </div>
+
+
+            <div class="form-group">
+
+                <label asp-for="Assignees" class="control-label"></label>
+                <br />
+
+                @foreach (var assignee in ViewData["People"] as IEnumerable<Person>)
+                {
+                    <input type="checkbox" />
+                    @assignee.FullName
+                    <span asp-validation-for="Assignees" class="text-danger"></span>
+                    <br />
+                }
+
+            </div>
+
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

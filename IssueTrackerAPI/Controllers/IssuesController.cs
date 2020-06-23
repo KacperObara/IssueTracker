@@ -188,7 +188,12 @@ namespace IssueTrackerAPI.Controllers
                 return NotFound();
             }
 
-            var issue = await _context.Issues.FindAsync(id);
+            ViewData["People"] = _context.People;
+
+            var issue = await _context.Issues
+                .Include(i => i.Assignees)  
+                .ThenInclude(p => p.Person)
+                .FirstOrDefaultAsync(m => m.IssueId == id);
 
             if (issue == null)
             {
@@ -254,6 +259,8 @@ namespace IssueTrackerAPI.Controllers
                 .Include(i => i.Severity)
                 .Include(i => i.Status)
                 .FirstOrDefaultAsync(m => m.IssueId == id);
+
+            
 
             if (issue == null)
             {
