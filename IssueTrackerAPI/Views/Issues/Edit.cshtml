@@ -1,4 +1,5 @@
-﻿@model IssueTrackerAPI.Models.Issue
+﻿@*@model IssueTrackerAPI.Models.Issue*@
+@model IssueTrackerAPI.ViewModels.IssueAssigneeViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,52 +13,52 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IssueId" />
+            <input type="hidden" asp-for="Issue.IssueId" />
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="Issue.Title" class="control-label"></label>
+                <input asp-for="Issue.Title" class="form-control" />
+                <span asp-validation-for="Issue.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Issue.Description" class="control-label"></label>
+                <input asp-for="Issue.Description" class="form-control" />
+                <span asp-validation-for="Issue.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Author" class="control-label"></label>
-                <select asp-for="AuthorId" class="form-control" asp-items="ViewBag.AuthorId"></select>
-                <span asp-validation-for="AuthorId" class="text-danger"></span>
+                <label asp-for="Issue.Author" class="control-label"></label>
+                <select asp-for="Issue.AuthorId" class="form-control" asp-items="ViewBag.AuthorId"></select>
+                <span asp-validation-for="Issue.AuthorId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Project" class="control-label"></label>
-                <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
-                <span asp-validation-for="ProjectId" class="text-danger"></span>
+                <label asp-for="Issue.Project" class="control-label"></label>
+                <select asp-for="Issue.ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
+                <span asp-validation-for="Issue.ProjectId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Severity" class="control-label"></label>
-                <select asp-for="SeverityId" class="form-control" asp-items="ViewBag.SeverityId"></select>
-                <span asp-validation-for="SeverityId" class="text-danger"></span>
+                <label asp-for="Issue.Severity" class="control-label"></label>
+                <select asp-for="Issue.SeverityId" class="form-control" asp-items="ViewBag.SeverityId"></select>
+                <span asp-validation-for="Issue.SeverityId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="StatusId" class="form-control" asp-items="ViewBag.StatusId"></select>
-                <span asp-validation-for="StatusId" class="text-danger"></span>
+                <label asp-for="Issue.Status" class="control-label"></label>
+                <select asp-for="Issue.StatusId" class="form-control" asp-items="ViewBag.StatusId"></select>
+                <span asp-validation-for="Issue.StatusId" class="text-danger"></span>
             </div>
 
-
             <div class="form-group">
 
-                <label asp-for="Assignees" class="control-label"></label>
+                <label asp-for="Issue.Assignees" class="control-label"></label>
+
                 <br />
 
-                @foreach (var assignee in ViewData["People"] as IEnumerable<Person>)
+                @foreach (Person person in Model.People)
                 {
-                    <input type="checkbox" />
-                    @assignee.FullName
-                    <span asp-validation-for="Assignees" class="text-danger"></span>
-                    <br />
-                }
+                    bool a = Model.IsAssigned(person);
+                    //ViewData["G"] = a;
 
+                    <input type="checkbox" value="@a" name="@a.ToString()"/> @person.FullName <br />
+                }
+                @*<input type="checkbox" value="@a" checked="checked" name="@a" class="CourseCheckboxList"/>*@
             </div>
 
 

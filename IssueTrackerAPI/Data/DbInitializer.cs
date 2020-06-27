@@ -34,7 +34,8 @@ namespace IssueTrackerAPI.Data
             var people = new Person[]
             {
                 new Person{FirstName = "Jan", LastName = "Kowalski", Email = "test@test.com"},
-                new Person{FirstName = "Emil", LastName = "Nowak", Email = "test2@test.com"}
+                new Person{FirstName = "Emil", LastName = "Nowak", Email = "test2@test.com"},
+                new Person{FirstName = "Artur", LastName = "Król", Email = "krol@test.com"}
             };
 
             foreach (Person p in people)

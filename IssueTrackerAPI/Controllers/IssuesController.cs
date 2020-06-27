@@ -9,6 +9,7 @@ using IssueTrackerAPI.Models;
 using OfficeOpenXml;
 using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
+using IssueTrackerAPI.ViewModels;
 
 namespace IssueTrackerAPI.Controllers
 {
@@ -188,10 +189,10 @@ namespace IssueTrackerAPI.Controllers
                 return NotFound();
             }
 
-            ViewData["People"] = _context.People;
+            //ViewData["People"] = _context.People;
 
             var issue = await _context.Issues
-                .Include(i => i.Assignees)  
+                .Include(i => i.Assignees)
                 .ThenInclude(p => p.Person)
                 .FirstOrDefaultAsync(m => m.IssueId == id);
 
@@ -203,7 +204,14 @@ namespace IssueTrackerAPI.Controllers
             ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", issue.ProjectId);
             ViewData["SeverityId"] = new SelectList(_context.Severities, "SeverityId", "SeverityName", issue.SeverityId);
             ViewData["StatusId"] = new SelectList(_context.Statuses, "StatusId", "StatusName", issue.StatusId);
-            return View(issue);
+
+            IssueAssigneeViewModel issueAssigneeViewModel = new IssueAssigneeViewModel()
+            {
+                Issue = issue,
+                People = _context.People.ToList()
+            };
+
+            return View(issueAssigneeViewModel);
         }
 
         // POST: Issues/Edit/5
@@ -284,6 +292,17 @@ namespace IssueTrackerAPI.Controllers
         private bool IssueExists(int id)
         {
             return _context.Issues.Any(e => e.IssueId == id);
+        }
+
+        public bool IsAssigned(Issue issue, Person person)
+        {
+            foreach (Assignee assignee in issue.Assignees)
+            {
+                if (assignee.Person == person)
+                    return true;
+            }
+
+            return false;
         }
 
         public IActionResult ExportToExcel()
